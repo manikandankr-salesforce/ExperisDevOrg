@@ -1,0 +1,37 @@
+<apex:page standardController="SBQQ__Quote__c" extensions="QuoteExtController" action="{!onPreview}" title="Submit Quote for Approval" lightningStylesheets="true">
+<style type="text/css">
+    textarea {
+        height: 20px;
+        width:79%;
+    }
+</style>
+
+<apex:outputPanel id="messages">
+    <apex:pageMessages />
+</apex:outputPanel> 
+
+    <apex:form >
+        <apex:pageBlock title="Approval Preview">
+            <apex:pageBlockSection columns="1" collapsible="false" title="Quote Information" id="quoteInfo">
+                <apex:outputField value="{!SBQQ__Quote__c.Name}" />                   
+            </apex:pageBlockSection>
+            <apex:pageBlockButtons location="Top">
+                <apex:actionStatus id="saveStatus">
+                    <apex:facet name="stop">
+                        <apex:commandButton value="Submit For Approval" action="{!onSubmit}" rerender="messages" status="saveStatus"/>
+                    </apex:facet>
+                    <apex:facet name="start">
+                        <apex:commandButton value="Saving..." status="saveStatus" disabled="true" rerender="messages"/>
+                    </apex:facet>
+                </apex:actionStatus>
+                <apex:commandButton value="Return to Quote" action="{!cancel}" immediate="true"/>
+            </apex:pageBlockButtons>
+                   
+   
+        </apex:pageBlock>
+    </apex:form>
+    
+    
+   
+    
+</apex:page>

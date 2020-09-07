@@ -1,0 +1,38 @@
+<aura:component controller="PriceBookGeneration" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	<aura:attribute name="mydata" type="Object"/>   
+    
+    <aura:attribute name="mycolumns" type="List"/> 
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+   
+    <lightning:layout horizontalAlign="end">
+        <lightning:layoutItem padding="around-medium">
+            <lightning:button label="Generate" variant="Neutral" onclick="{!c.generateRecord}"/>
+        </lightning:layoutItem>
+    </lightning:layout>
+    
+    <lightning:layout horizontalAlign="left">
+    	<lightning:layoutItem padding="around-medium">
+        <aura:if isTrue="{!not(empty(v.mydata))}">
+            <div style="width: 1250px;">
+                <lightning:datatable data="{! v.mydata }"
+                    columns="{! v.mycolumns }"
+                    keyField="Id"
+                    showRowNumberColumn="true"
+                    hideCheckboxColumn="true"/>
+                </div>
+        </aura:if>
+        </lightning:layoutItem>
+    </lightning:layout>
+
+    <lightning:layout horizontalAlign="left">
+        <lightning:layoutItem padding="around-medium">
+         <aura:if isTrue="{!not(empty(v.mydata))}">
+        	    <lightning:button label="Save" variant="brand" />
+                <lightning:button label="Preview Approval" variant="brand" onclick = "{!c.previewApproval}"/>
+                <lightning:button label="Submit" variant="brand" onclick="{!c.submitForApproval}"/>
+         </aura:if>
+        </lightning:layoutItem>
+    </lightning:layout>
+
+</aura:component>

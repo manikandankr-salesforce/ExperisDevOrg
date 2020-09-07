@@ -1,0 +1,11 @@
+<apex:page standardController="Base_Price_Policy__c" recordSetVar="basePricePol" extensions="BasePricePolControllerExtension">
+<!--apex:pageBlock >
+    <apex:pageBlockTable value="{!basePricePol}" var="policyRec">
+      <apex:column value="{!policyRec.name}"/>
+    </apex:pageBlockTable>
+  </apex:pageBlock-->
+   <apex:repeat value="{!basePricePol}" var="policyRec">
+        <apex:outputText value="{!policyRec.Id}"/>
+    </apex:repeat>
+  
+</apex:page>

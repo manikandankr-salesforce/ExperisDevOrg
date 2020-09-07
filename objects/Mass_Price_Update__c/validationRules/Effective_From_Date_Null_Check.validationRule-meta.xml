@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Effective_From_Date_Null_Check</fullName>
+    <active>true</active>
+    <errorConditionFormula>OR(Effective_From__c &lt; TODAY(), ISNULL(Effective_From__c))</errorConditionFormula>
+    <errorDisplayField>Effective_From__c</errorDisplayField>
+    <errorMessage>Effective From cannot be null or Date before Current Date.</errorMessage>
+</ValidationRule>

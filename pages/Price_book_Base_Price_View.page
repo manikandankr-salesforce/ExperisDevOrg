@@ -1,0 +1,6 @@
+<apex:page >
+    <!--
+    <apex:listViews type="Base_Price_Policy__c"/>
+    -->
+    <apex:enhancedList type="Base_Price_Policy__c" height="250" rowsPerPage="10" id="YourListViewId" />
+</apex:page>

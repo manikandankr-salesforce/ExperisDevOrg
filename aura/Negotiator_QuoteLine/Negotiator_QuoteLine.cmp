@@ -1,0 +1,576 @@
+<aura:component controller = "QuoteLineNegotiator" implements="flexipage:availableForAllPageTypes,force:lightningQuickActionWithOutHeader,force:hasRecordId,force:appHostable,flexipage:availableForRecordHome,force:lightningQuickAction" access="global">
+    <aura:html tag="style">
+        .slds-modal__container{ 
+        height : auto; width: 90%; max-width:90vh; 
+        } 
+        .modal-body{ 
+        height : 90vh !important; 
+        max-height: 90vh !important; 
+        width : 175vh !important;
+        max-width: 175vh !important;
+        } 
+        .slds-modal__footer{ 
+        display: inline !important; 
+        }
+    </aura:html>
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      fields="SBQQ__Product__c,SBQQ__ProductName__c,SBQQ__ProductFamily__c,ExperisPricing__Base_Price__c,ExperisPricing__Additional_Discount_Amt__c,ExperisPricing__Additional_Discount__c,SBQQ__Discount__c,ExperisPricing__Customer_Price__c,ExperisPricing__PrimaryNegotiator__c,ExperisPricing__Freight_Charge_Percent__c,SBQQ__ListPrice__c,ExperisPricing__Other_Services_Charge__c,ExperisPricing__Revenue_Rebate__c,ExperisPricing__Volume_Rebate__c,ExperisPricing__Freight_Cost__c,ExperisPricing__Pocket_Price__c,ExperisPricing__Standard_Cost__c,ExperisPricing__Service_Cost__c,ExperisPricing__Pocket_Margin__c,ExperisPricing__Channel_Discount__c"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields="{!v.OpptyRecord}"
+                      mode="VIEW"/>
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+    <!--<lightning:workspaceAPI aura:id="workspace" />-->
+    
+    <aura:attribute name="selTabId" type="String" />
+    <aura:attribute type="String" name="buttonlabel"/>
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="OpptyRecord" type="Object"/>
+    <aura:attribute name="recordError" type="String"/>
+    <aura:attribute name="ncprice" type="integer" />
+    <aura:attribute name="niprice" type="integer" />
+    <aura:attribute name="nnprice" type="integer" />
+    <aura:attribute name="npprice" type="integer" />
+    <aura:attribute name="npmargin" type="integer" />
+    <aura:attribute name="adD" type="integer" />
+    <aura:attribute name="aADValue" type="integer" />
+	<aura:attribute name="ncpricePct" type="integer" />
+	<aura:attribute name="nipricePct" type="integer" />    
+	<aura:attribute name="nppricePct" type="integer" />    
+    <aura:attribute name="npmarginPct" type="integer" />    
+    <aura:attribute name="nnpricePct" type="integer" />    
+    <aura:attribute name="frprice" type="integer" />
+    <aura:attribute name="fcPct" type="integer" />
+	<aura:attribute name="bpprice" type="integer" />
+    <aura:attribute name="bpPct" type="integer" />
+	<aura:attribute name="faprice" type="integer" />
+    <aura:attribute name="faPct" type="integer" />
+	<aura:attribute name="pdprice" type="integer" />
+    <aura:attribute name="pdPct" type="integer" />
+	<aura:attribute name="glprice" type="integer" />
+    <aura:attribute name="glPct" type="integer" />
+    <aura:attribute name="secprice" type="integer" />
+<aura:attribute name="scprice" type="integer" />
+    <aura:attribute name="vrprice" type="integer" />
+    <aura:attribute name="secPct" type="integer" />
+    <aura:attribute name="scPct" type="integer" />
+    <aura:attribute name="vrPct" type="integer" />
+    <aura:attribute name="frcprice" type="integer" />
+    <aura:attribute name="frcPct" type="integer" />
+    <aura:attribute name="rrprice" type="integer" />
+    <aura:attribute name="rrPct" type="integer" />
+    
+    
+    <aura:attribute name="ncprice2" type="integer" />
+    <aura:attribute name="niprice2" type="integer" />
+    <aura:attribute name="nnprice2" type="integer" />
+    <aura:attribute name="npprice2" type="integer" />
+    <aura:attribute name="npmargin2" type="integer" />
+    <aura:attribute name="adD2" type="integer" />
+	<aura:attribute name="aADValue2" type="integer" />
+    <aura:attribute name="ncpricePct2" type="integer" />
+	<aura:attribute name="nipricePct2" type="integer" />    
+	<aura:attribute name="nppricePct2" type="integer" />    
+    <aura:attribute name="npmarginPct2" type="integer" />    
+    <aura:attribute name="nnpricePct2" type="integer" />    
+    <aura:attribute name="frprice2" type="integer" />
+    <aura:attribute name="fcPct2" type="integer" />
+    <aura:attribute name="bpprice2" type="integer" />
+    <aura:attribute name="bpPct2" type="integer" />
+	<aura:attribute name="faprice2" type="integer" />
+    <aura:attribute name="faPct2" type="integer" />
+    <aura:attribute name="pdprice2" type="integer" />
+    <aura:attribute name="pdPct2" type="integer" />
+<aura:attribute name="glprice2" type="integer" />
+    <aura:attribute name="glPct2" type="integer" />
+    <aura:attribute name="secprice2" type="integer" />
+<aura:attribute name="scprice2" type="integer" />
+    <aura:attribute name="vrprice2" type="integer" />
+    <aura:attribute name="secPct2" type="integer" />
+    <aura:attribute name="scPct2" type="integer" />
+    <aura:attribute name="vrPct2" type="integer" />
+    <aura:attribute name="frcprice2" type="integer" />
+    <aura:attribute name="frcPct2" type="integer" />
+    <aura:attribute name="rrprice2" type="integer" />
+    <aura:attribute name="rrPct2" type="integer" />
+    
+
+   	<aura:attribute name="ncprice3" type="integer" />
+    <aura:attribute name="niprice3" type="integer" />
+    <aura:attribute name="nnprice3" type="integer" />
+    <aura:attribute name="npprice3" type="integer" />
+    <aura:attribute name="npmargin3" type="integer" />
+    <aura:attribute name="adD3" type="integer" />
+	<aura:attribute name="aADValue3" type="integer" />
+    <aura:attribute name="ncpricePct3" type="integer" />
+	<aura:attribute name="nipricePct3" type="integer" />    
+	<aura:attribute name="nppricePct3" type="integer" />    
+    <aura:attribute name="npmarginPct3" type="integer" />    
+    <aura:attribute name="nnpricePct3" type="integer" />    
+    <aura:attribute name="frprice3" type="integer" />
+    <aura:attribute name="fcPct3" type="integer" />
+    <aura:attribute name="bpprice3" type="integer" />
+    <aura:attribute name="bpPct3" type="integer" />
+	<aura:attribute name="faprice3" type="integer" />
+    <aura:attribute name="faPct3" type="integer" />
+<aura:attribute name="pdprice3" type="integer" />
+    <aura:attribute name="pdPct3" type="integer" />
+<aura:attribute name="glprice3" type="integer" />
+    <aura:attribute name="glPct3" type="integer" />
+    <aura:attribute name="secprice3" type="integer" />
+<aura:attribute name="scprice3" type="integer" />
+    <aura:attribute name="vrprice3" type="integer" />
+    <aura:attribute name="secPct3" type="integer" />
+    <aura:attribute name="scPct3" type="integer" />
+    <aura:attribute name="vrPct3" type="integer" />
+    <aura:attribute name="frcprice3" type="integer" />
+    <aura:attribute name="frcPct3" type="integer" />
+    <aura:attribute name="rrprice3" type="integer" />
+    <aura:attribute name="rrPct3" type="integer" />
+
+    <aura:attribute name="ProductName" type="String" default="{!v.OpptyRecord.SBQQ__ProductName__c}"/>
+    <aura:attribute name="ProductFamily" type="String" default="{!v.OpptyRecord.SBQQ__ProductFamily__c}"/>
+    
+    <aura:attribute name="ParterChannelDiscount" type="Decimal" default="{!(v.OpptyRecord.ExperisPricing__Channel_Discount__c * v.OpptyRecord.SBQQ__ListPrice__c)/100}"/>
+    <aura:attribute name="VolumeDiscount" type="Decimal" default="{!(v.OpptyRecord.ExperisPricing__Volume_Discount__c * v.OpptyRecord.SBQQ__ListPrice__c)/100}"/>
+    <aura:attribute name="FreightCharge" type="Decimal" default="{!(v.OpptyRecord.ExperisPricing__Freight_Charge_Percent__c * v.OpptyRecord.ExperisPricing__Customer_Price__c)/100}"/>
+    <aura:attribute name="AdditionalDiscount" type="Decimal" default="{!(v.OpptyRecord.SBQQ__Discount__c * v.OpptyRecord.SBQQ__ListPrice__c)/100}"/>
+    
+    <aura:attribute name="AdditionalDiscPerc" type="Decimal" default="{!v.OpptyRecord.SBQQ__Discount__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="CustomerPricePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Customer_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="FamilyAdjustmentPerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Family_Adjustment__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="ProductAdjustmentPerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Product_Adjustment__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="GLobalListPricePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__GLobal_List_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="LocalFactorAdjustmentPerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Local_Factor_Adjustment__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="ListPricePerc" type="Decimal" default="{!v.OpptyRecord.SBQQ__ListPrice__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="ParterChannelDiscountPerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Channel_Discount__c / 100}"/>
+    <aura:attribute name="VolumeDiscountPerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Volume_Discount__c / 100}"/>
+    <aura:attribute name="FreightChargePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Freight_Charge_Percent__c / 100}"/>
+    <aura:attribute name="OtherServicesChargePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Other_Services_Charge__c / v.OpptyRecord.ExperisPricing__Customer_Price__c}"/>
+    <aura:attribute name="InvoicePricePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Product_Invoice_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="RevenueRebatePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Revenue_Rebate__c / v.OpptyRecord.ExperisPricing__Product_Invoice_Price__c}"/>
+    <aura:attribute name="VolumeRebatePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Volume_Rebate__c / v.OpptyRecord.ExperisPricing__Product_Invoice_Price__c}"/>
+    <aura:attribute name="NetPricePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Net_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="FreightCostPerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Freight_Cost__c / v.OpptyRecord.ExperisPricing__Net_Price__c}"/>
+    <aura:attribute name="ServiceCostPerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Service_Cost__c / v.OpptyRecord.ExperisPricing__Net_Price__c}"/>
+    <aura:attribute name="PocketPricePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Pocket_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="StandardCostPerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Standard_Cost__c / v.OpptyRecord.ExperisPricing__Pocket_Price__c}"/>
+    <aura:attribute name="PocketMarginPerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Pocket_Margin__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    
+    
+    
+    
+    <aura:attribute name="ParterChannelDiscount2" type="Decimal" default="{!(v.OpptyRecord.ExperisPricing__Channel_Discount__c * v.OpptyRecord.SBQQ__ListPrice__c)/100}"/>
+    <aura:attribute name="VolumeDiscount2" type="Decimal" default="{!(v.OpptyRecord.ExperisPricing__Volume_Discount__c * v.OpptyRecord.SBQQ__ListPrice__c)/100}"/>
+    <aura:attribute name="FreightCharge2" type="Decimal" default="{!(v.OpptyRecord.ExperisPricing__Freight_Charge_Percent__c * v.OpptyRecord.ExperisPricing__Customer_Price__c)/100}"/>
+    <aura:attribute name="AdditionalDiscount2" type="Decimal" default="{!(v.OpptyRecord.SBQQ__Discount__c * v.OpptyRecord.SBQQ__ListPrice__c)/100}"/>
+    
+    <aura:attribute name="AdditionalDiscPerc2" type="Decimal" default="{!v.OpptyRecord.SBQQ__Discount__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="CustomerPricePerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Customer_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="FamilyAdjustmentPerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Family_Adjustment__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="ProductAdjustmentPerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Product_Adjustment__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="GLobalListPricePerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__GLobal_List_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="LocalFactorAdjustmentPerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Local_Factor_Adjustment__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="ListPricePerc2" type="Decimal" default="{!v.OpptyRecord.SBQQ__ListPrice__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="ParterChannelDiscountPerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Channel_Discount__c / 100}"/>
+    <aura:attribute name="VolumeDiscountPerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Volume_Discount__c / 100}"/>
+    <aura:attribute name="FreightChargePerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Freight_Charge_Percent__c / 100}"/>
+    <aura:attribute name="OtherServicesChargePerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Other_Services_Charge__c / v.OpptyRecord.ExperisPricing__Customer_Price__c}"/>
+    <aura:attribute name="InvoicePricePerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Product_Invoice_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="RevenueRebatePerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Revenue_Rebate__c / v.OpptyRecord.ExperisPricing__Product_Invoice_Price__c}"/>
+    <aura:attribute name="VolumeRebatePerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Volume_Rebate__c / v.OpptyRecord.ExperisPricing__Product_Invoice_Price__c}"/>
+    <aura:attribute name="NetPricePerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Net_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="FreightCostPerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Freight_Cost__c / v.OpptyRecord.ExperisPricing__Net_Price__c}"/>
+    <aura:attribute name="ServiceCostPerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Service_Cost__c / v.OpptyRecord.ExperisPricing__Net_Price__c}"/>
+    <aura:attribute name="PocketPricePerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Pocket_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="StandardCostPerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Standard_Cost__c / v.OpptyRecord.ExperisPricing__Pocket_Price__c}"/>
+    <aura:attribute name="PocketMarginPerc2" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Pocket_Margin__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    
+    
+    
+    <aura:attribute name="ParterChannelDiscount3" type="Decimal" default="{!(v.OpptyRecord.ExperisPricing__Channel_Discount__c * v.OpptyRecord.SBQQ__ListPrice__c)/100}"/>
+    <aura:attribute name="VolumeDiscount3" type="Decimal" default="{!(v.OpptyRecord.ExperisPricing__Volume_Discount__c * v.OpptyRecord.SBQQ__ListPrice__c)/100}"/>
+    <aura:attribute name="FreightCharge3" type="Decimal" default="{!(v.OpptyRecord.ExperisPricing__Freight_Charge_Percent__c * v.OpptyRecord.ExperisPricing__Customer_Price__c)/100}"/>
+    <aura:attribute name="AdditionalDiscount3" type="Decimal" default="{!(v.OpptyRecord.SBQQ__Discount__c * v.OpptyRecord.SBQQ__ListPrice__c)/100}"/>
+    
+    <aura:attribute name="AdditionalDiscPerc3" type="Decimal" default="{!v.OpptyRecord.SBQQ__Discount__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="CustomerPricePerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Customer_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="FamilyAdjustmentPerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Family_Adjustment__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="ProductAdjustmentPerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Product_Adjustment__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="GLobalListPricePerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__GLobal_List_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="LocalFactorAdjustmentPerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Local_Factor_Adjustment__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="ListPricePerc3" type="Decimal" default="{!v.OpptyRecord.SBQQ__ListPrice__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="ParterChannelDiscountPerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Channel_Discount__c / 100}"/>
+    <aura:attribute name="VolumeDiscountPerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Volume_Discount__c / 100}"/>
+    <aura:attribute name="FreightChargePerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Freight_Charge_Percent__c / 100}"/>
+    <aura:attribute name="OtherServicesChargePerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Other_Services_Charge__c / v.OpptyRecord.ExperisPricing__Customer_Price__c}"/>
+    <aura:attribute name="InvoicePricePerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Product_Invoice_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="RevenueRebatePerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Revenue_Rebate__c / v.OpptyRecord.ExperisPricing__Product_Invoice_Price__c}"/>
+    <aura:attribute name="VolumeRebatePerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Volume_Rebate__c / v.OpptyRecord.ExperisPricing__Product_Invoice_Price__c}"/>
+    <aura:attribute name="NetPricePerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Net_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="FreightCostPerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Freight_Cost__c / v.OpptyRecord.ExperisPricing__Net_Price__c}"/>
+    <aura:attribute name="ServiceCostPerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Service_Cost__c / v.OpptyRecord.ExperisPricing__Net_Price__c}"/>
+    <aura:attribute name="PocketPricePerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Pocket_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="StandardCostPerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Standard_Cost__c / v.OpptyRecord.ExperisPricing__Pocket_Price__c}"/>
+    <aura:attribute name="PocketMarginPerc3" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Pocket_Margin__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    
+    
+    <table style="width:700px;border-collapse: collapse;">
+        <tr><th>Product Name:</th><td>{!v.ProductName}</td><th>Family Name:	</th>{!v.ProductFamily}</tr>
+    </table>
+    <lightning:tabset selectedTabId="{!v.selTabId}" variant="scoped">
+        <lightning:tab label="Negotiator 1" id="tab1">
+            <lightning:messages />
+            <table style="width:950px;border-collapse: collapse;">
+                <tr><td>
+                    <lightning:recordEditForm aura:id="QuoteLineForm" recordId="{!v.recordId}" objectApiName="SBQQ__QuoteLine__c" onsubmit="{!c.handleOnSubmit}">
+                        <table style="width:600px;border-collapse: collapse;">
+                            <tr class="border_bottom"><th>Waterfall</th><th>Amount</th><th>Percent</th><th>Percent Editable</th><th>Dropdowns</th></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Base Price</td>
+                                <td style="width:20%;"><lightning:inputField fieldName="ExperisPricing__Base_Price__c" readonly="true" value="{!v.bpprice}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Base_Price_Percent__c" readonly="true" value="{!v.bpPct}"/></td>
+                                <td><lightning:inputField fieldName="SBQQ__ProductName__c" readonly="true" aura:id="pNId" class="slds-hide"/></td>
+                                <td><lightning:inputField fieldName="SBQQ__Product__c" readonly="true" aura:id="pId" class="slds-hide"/></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Family Adjustments</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Family_Adjustment__c" readonly="true" value="{!v.faprice}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Family_Adjustment_Percent__c" readonly="true" value="{!v.faPct}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Product Adjustments</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Product_Adjustment__c" style="currency" readonly="true" value="{!v.pdprice}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Product_Adjustment_Percent__c" readonly="true" value="{!v.pdPct}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Global List Price</td>
+                                <td style="width:20%;"><lightning:inputField fieldName="ExperisPricing__GLobal_List_Price__c" readonly="true" value="{!v.glprice}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__GLobal_List_Price_Percent__c" readonly="true" value="{!v.glPct}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Local Factor Adjustment</td>
+                                <td><lightning:outputField fieldName="ExperisPricing__Local_Factor_Adjustment__c" variant="label-hidden"/></td>
+                                <td><lightning:formattedNumber value="{!v.LocalFactorAdjustmentPerc}" style="percent" maximumFractionDigits="2"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">List Price</td>
+                                <td style="width:20%;"><lightning:inputField fieldName="SBQQ__ListPrice__c" readonly="true" aura:id="lpD"/></td>
+                                <td style="width:15%;"><lightning:formattedNumber value="{!v.ListPricePerc}" style="percent" maximumFractionDigits="2"/></td>
+                                <td style="width:10%;"></td><td style="width:20%;"></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Partner Channel Discount</td>
+                                <td><lightning:formattedNumber value="{!v.ParterChannelDiscount}" style="currency" maximumFractionDigits="2" aura:id="pcD"/></td>
+                                <td><lightning:formattedNumber value="{!v.ParterChannelDiscountPerc}" style="percent" maximumFractionDigits="2"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Volume Discount</td>
+                                <td><lightning:formattedNumber value="{!v.VolumeDiscount}" style="currency" maximumFractionDigits="2" aura:id="vD"/></td>
+                                <td><lightning:formattedNumber value="{!v.VolumeDiscountPerc}" style="percent" maximumFractionDigits="2"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additional Discount</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Additional_Discount_Amt__c" style="currency" readonly="true" value="{!v.adD}"/></td>
+                                <td><lightning:inputField fieldName="SBQQ__Discount__c" aura:id="adjF" readonly="true" class="slds-hide"/></td>
+                                <td><lightning:inputField fieldName="SBQQ__Discount__c" aura:id="adF" value="{!v.aADValue}"/></td>
+                                <td><lightning:outputField fieldName="ExperisPricing__Discount_Indicator__c"/></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Customer Price</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Product_Invoice_Price__c" value="{!v.ncprice}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Customer_Price_Pct__c" value="{!v.ncpricePct}" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freight Charge</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Charge__c" value="{!v.frprice}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Charge_Percent__c" readonly="true" aura:id="frD" value="{!v.fcPct}"/></td>
+                                <td><lightning:inputField fieldName="SBQQ__ProductFamily__c" readonly="true" aura:id="pFId" class="slds-hide"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Type__c" onchange="{!c.handleChange}"/></td></tr>
+                            <!--<tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other Services Charge</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Other_Services_Charge__c" style="currency" readonly="true" aura:id="osD"/></td>
+                                <td><lightning:formattedNumber value="{!v.OtherServicesChargePerc}" style="percent" maximumFractionDigits="2"/></td>
+                                <td></td><td></td></tr>-->
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Invoice Price</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Invoice_Price__c" value="{!v.niprice}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Invoice_Price_Pct__c" value="{!v.nipricePct}" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Revenue Rebate</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Revenue_Rebate__c" style="currency" readonly="true" aura:id="rrD" value="{!v.rrprice}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Revenue_Rebate_Percent__c" readonly="true" value="{!v.rrPct}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Volume Rebate</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Volume_Rebate__c" style="currency" readonly="true" value="{!v.vrprice}" aura:id="vrD"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Volume_Rebate_Percent__c" readonly="true" value="{!v.vrPct}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Net Price</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Net_Price__c" value="{!v.nnprice}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Net_Price_Pct__c" value="{!v.nnpricePct}" style="percent" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freight Cost</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Cost__c" style="currency" readonly="true" aura:id="fcD" value="{!v.frcprice}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Cost_Percent__c" readonly="true" value="{!v.frcPct}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Service Cost</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Service_Cost__c" style="currency" readonly="true" value="{!v.secprice}" aura:id="secD"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Service_Cost_Percent__c" readonly="true" value="{!v.secPct}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Pocket Price</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Pocket_Price__c" value="{!v.npprice}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Pocket_Price_Pct__c" value="{!v.nppricePct}" style="percent" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Standard Cost</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Standard_Cost__c" style="currency" readonly="true" value="{!v.scprice}" aura:id="scD"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Standard_Cost_Percent__c" readonly="true" value="{!v.scPct}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Pocket Margin</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Pocket_Margin__c" value="{!v.npmargin}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Pocket_Margin_Pct__c" value="{!v.npmarginPct}" style="percent" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            
+                        </table>
+                        <lightning:button class="slds-m-top_small" variant="brand" type="cancel"  name="cancel" label="Back" onclick="{!c.cancel}"/>
+                        <lightning:button class="slds-m-top_small" variant="brand" type="submit" name="calculate" label="Calculate" onclick="{!c.Submit3}" />
+                        <lightning:button class="slds-m-top_small" variant="brand" type="submit" name="apply" label="Apply" onclick="{!c.Submit1}" />
+                        <lightning:button class="slds-m-top_small" variant="brand" type="submit" onclick="{!c.Submit2}" name="apply" label="Apply and Primary" />
+                    </lightning:recordEditForm>
+                    </td>
+                    <td>
+                        <wave:waveDashboard dashboardId="0FK5w000000Bq7xGAC" 
+                                            showHeader = "false"
+                                            showSharing = "false" 
+                                            showTitle = "false"
+                                            height = "250px" 
+                                            openLinksInNewWindow="false"
+                                            hideOnError="true"
+		filter ="{'datasets':{'EPrisolTrasactions_2020MAY28_0_pref':[{'fields':['Name_brand_Grade'],'filter':{'operator': 'matches','values':['$[!v.OpptyRecord.SBQQ__ProductName__c]']}}]}}"/>                       
+                        <wave:waveDashboard dashboardId="0FK5w000000Bq7OGAS" 
+                                            showHeader = "false"
+                                            showSharing = "false" 
+                                            showTitle = "false"
+                                            height = "250px" />
+                    </td></tr></table>
+        </lightning:tab>
+        <lightning:tab label="Negotiator 2" id="tab2">
+            <lightning:messages />
+            <table style="width:950px;border-collapse: collapse;">
+                <tr><td>
+                    <lightning:recordEditForm aura:id="QuoteLineForm2" recordId="{!v.recordId}" objectApiName="SBQQ__QuoteLine__c" onsubmit="{!c.handleOnSubmitNeg2}">
+                        <table style="width:600px;border-collapse: collapse;">
+                            <tr class="border_bottom"><th>Waterfall</th><th>Amount</th><th>Percent</th><th>Percent Editable</th><th>Dropdowns</th></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Base Price</td>
+                                <td style="width:20%;"><lightning:inputField fieldName="ExperisPricing__Base_Price__c" readonly="true" value="{!v.bpprice2}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Base_Price_Percent__c" readonly="true" value="{!v.bpPct2}"/></td>
+                                <td><lightning:inputField fieldName="SBQQ__ProductName__c" readonly="true" aura:id="pNId2" class="slds-hide"/></td>
+								<td><lightning:inputField fieldName="SBQQ__Product__c" readonly="true" aura:id="pId2" class="slds-hide"/></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Family Adjustments</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Family_Adjustment__c" readonly="true" value="{!v.faprice2}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Family_Adjustment_Percent__c" readonly="true" value="{!v.faPct2}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Product Adjustments</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Product_Adjustment__c" style="currency" readonly="true" value="{!v.pdprice2}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Product_Adjustment_Percent__c" readonly="true" value="{!v.pdPct2}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Global List Price</td>
+                                <td style="width:20%;"><lightning:inputField fieldName="ExperisPricing__GLobal_List_Price__c" readonly="true" value="{!v.glprice2}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__GLobal_List_Price_Percent__c" readonly="true" value="{!v.glPct2}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Local Factor Adjustment</td>
+                                <td><lightning:outputField fieldName="ExperisPricing__Local_Factor_Adjustment__c" variant="label-hidden"/></td>
+                                <td><lightning:formattedNumber value="{!v.LocalFactorAdjustmentPerc2}" style="percent" maximumFractionDigits="2"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">List Price</td>
+                                <td style="width:20%;"><lightning:inputField fieldName="SBQQ__ListPrice__c" readonly="true" aura:id="lpD2"/></td>
+                                <td style="width:15%;"><lightning:formattedNumber value="{!v.ListPricePerc2}" style="percent" maximumFractionDigits="2"/></td>
+                                <td style="width:10%;"></td><td style="width:20%;"></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Partner Channel Discount</td>
+                                <td><lightning:formattedNumber value="{!v.ParterChannelDiscount2}" style="currency" maximumFractionDigits="2" aura:id="pcD2"/></td>
+                                <td><lightning:formattedNumber value="{!v.ParterChannelDiscountPerc2}" style="percent" maximumFractionDigits="2"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Volume Discount</td>
+                                <td><lightning:formattedNumber value="{!v.VolumeDiscount2}" style="currency" maximumFractionDigits="2" aura:id="vD2"/></td>
+                                <td><lightning:formattedNumber value="{!v.VolumeDiscountPerc2}" style="percent" maximumFractionDigits="2"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additional Discount</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Additional_Discount_Amt__c" style="currency" readonly="true" value="{!v.adD}"/></td>
+                                <td><lightning:inputField fieldName="SBQQ__Discount__c" aura:id="adjF2" readonly="true" class="slds-hide"/></td>
+                                <td><lightning:inputField fieldName="SBQQ__Discount__c" aura:id="adF2" value="{!v.aADValue2}"/></td>
+                                <td><lightning:outputField fieldName="ExperisPricing__Discount_Indicator__c"/></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Customer Price</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Product_Invoice_Price__c" value="{!v.ncprice2}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Customer_Price_Pct__c" value="{!v.ncpricePct2}" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freight Charge</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Charge__c" value="{!v.frprice2}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Charge_Percent__c" readonly="true" aura:id="frD2" value="{!v.fcPct2}"/></td>
+                                <!--<td><lightning:formattedNumber value="{!v.FreightChargePerc2}" style="percent" maximumFractionDigits="2" aura:id="frD2"/></td>-->
+                                <td><lightning:inputField fieldName="SBQQ__ProductFamily__c" readonly="true" aura:id="pFId2" class="slds-hide"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Type__c" onchange="{!c.handleChange2}"/></td></tr>
+                            <!--<tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other Services Charge</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Other_Services_Charge__c" style="currency" readonly="true" aura:id="osD2"/></td>
+                                <td><lightning:formattedNumber value="{!v.OtherServicesChargePerc2}" style="percent" maximumFractionDigits="2"/></td>
+                                <td></td><td></td></tr>-->
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Invoice Price</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Invoice_Price__c" value="{!v.niprice2}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Invoice_Price_Pct__c" value="{!v.nipricePct2}" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Revenue Rebate</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Revenue_Rebate__c" style="currency" readonly="true" aura:id="rrD2" value="{!v.rrprice2}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Revenue_Rebate_Percent__c" readonly="true" value="{!v.rrPct2}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Volume Rebate</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Volume_Rebate__c" style="currency" readonly="true" value="{!v.vrprice2}" aura:id="vrD2"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Volume_Rebate_Percent__c" readonly="true" value="{!v.vrPct2}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Net Price</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Net_Price__c" value="{!v.nnprice2}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Net_Price_Pct__c" value="{!v.nnpricePct2}" style="percent" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freight Cost</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Cost__c" style="currency" readonly="true" aura:id="fcD2" value="{!v.frcprice2}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Cost_Percent__c" readonly="true" value="{!v.frcPct2}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Service Cost</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Service_Cost__c" style="currency" readonly="true" value="{!v.secprice2}" aura:id="secD2"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Service_Cost_Percent__c" readonly="true" value="{!v.secPct}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Pocket Price</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Pocket_Price__c" value="{!v.npprice2}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Pocket_Price_Pct__c" value="{!v.nppricePct2}" style="percent" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Standard Cost</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Standard_Cost__c" style="currency" readonly="true" value="{!v.scprice2}" aura:id="scD2"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Standard_Cost_Percent__c" readonly="true" value="{!v.scPct2}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Pocket Margin</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Pocket_Margin__c" value="{!v.npmargin2}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Pocket_Margin_Pct__c" value="{!v.npmarginPct2}" style="percent" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            
+                        </table>
+                        <lightning:button class="slds-m-top_small" variant="brand" type="cancel"  name="cancel" label="Back" onclick="{!c.cancel}"/>
+                        <lightning:button class="slds-m-top_small" variant="brand" type="submit" name="calculate" label="Calculate" onclick="{!c.Submit3}" />
+                        <lightning:button class="slds-m-top_small" variant="brand" type="submit" name="apply" label="Apply" onclick="{!c.Submit1}" />
+                        <lightning:button class="slds-m-top_small" variant="brand" type="submit" onclick="{!c.Submit2}" name="apply" label="Apply and Primary" />
+                    </lightning:recordEditForm>
+                    </td>
+                    <td>
+                        <wave:waveDashboard dashboardId="0FK5w000000Bq7xGAC" 
+                                            showHeader = "false"
+                                            showSharing = "false" 
+                                            showTitle = "false"
+                                            height = "250px" />
+                        <wave:waveDashboard dashboardId="0FK5w000000Bq7OGAS" 
+                                            showHeader = "false"
+                                            showSharing = "false" 
+                                            showTitle = "false"
+                                            height = "250px" />
+                    </td></tr></table>
+        </lightning:tab>
+        <lightning:tab label="Negotiator 3" id="tab3">
+            <lightning:messages />
+            <table style="width:950px;border-collapse: collapse;">
+                <tr><td>
+                    <lightning:recordEditForm aura:id="QuoteLineForm3" recordId="{!v.recordId}" objectApiName="SBQQ__QuoteLine__c" onsubmit="{!c.handleOnSubmitNeg3}">
+                        <table style="width:600px;border-collapse: collapse;">
+                            <tr class="border_bottom"><th>Waterfall</th><th>Amount</th><th>Percent</th><th>Percent Editable</th><th>Dropdowns</th></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Base Price</td>
+                                <td style="width:20%;"><lightning:inputField fieldName="ExperisPricing__Base_Price__c" readonly="true" value="{!v.bpprice3}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Base_Price_Percent__c" readonly="true" value="{!v.bpPct3}"/></td>
+                                <td><lightning:inputField fieldName="SBQQ__ProductName__c" readonly="true" aura:id="pNId3" class="slds-hide"/></td>
+                                <td><lightning:inputField fieldName="SBQQ__Product__c" readonly="true" aura:id="pId3" class="slds-hide"/></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Family Adjustments</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Family_Adjustment__c" readonly="true" value="{!v.faprice3}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Family_Adjustment_Percent__c" readonly="true" value="{!v.faPct3}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Product Adjustments</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Product_Adjustment__c" style="currency" readonly="true" value="{!v.pdprice3}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Product_Adjustment_Percent__c" readonly="true" value="{!v.pdPct3}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Global List Price</td>
+                                <td style="width:20%;"><lightning:inputField fieldName="ExperisPricing__GLobal_List_Price__c" readonly="true" value="{!v.glprice3}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__GLobal_List_Price_Percent__c" readonly="true" value="{!v.glPct3}"/></td>
+                                <td style="width:10%;"></td><td style="width:20%;"></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Local Factor Adjustment</td>
+                                <td><lightning:outputField fieldName="ExperisPricing__Local_Factor_Adjustment__c" variant="label-hidden"/></td>
+                                <td><lightning:formattedNumber value="{!v.LocalFactorAdjustmentPerc3}" style="percent" maximumFractionDigits="2"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">List Price</td>
+                                <td style="width:20%;"><lightning:inputField fieldName="SBQQ__ListPrice__c" readonly="true" aura:id="lpD3"/></td>
+                                <td style="width:15%;"><lightning:formattedNumber value="{!v.ListPricePerc3}" style="percent" maximumFractionDigits="2"/></td>
+                                <td style="width:10%;"></td><td style="width:20%;"></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Partner Channel Discount</td>
+                                <td><lightning:formattedNumber value="{!v.ParterChannelDiscount3}" style="currency" maximumFractionDigits="2" aura:id="pcD3"/></td>
+                                <td><lightning:formattedNumber value="{!v.ParterChannelDiscountPerc3}" style="percent" maximumFractionDigits="2"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Volume Discount</td>
+                                <td><lightning:formattedNumber value="{!v.VolumeDiscount3}" style="currency" maximumFractionDigits="2" aura:id="vD3"/></td>
+                                <td><lightning:formattedNumber value="{!v.VolumeDiscountPerc3}" style="percent" maximumFractionDigits="2"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additional Discount</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Additional_Discount_Amt__c" style="currency" readonly="true" value="{!v.adD3}"/></td>
+                                <td><lightning:inputField fieldName="SBQQ__Discount__c" aura:id="adjF3" readonly="true" class="slds-hide"/></td>
+                                <td><lightning:inputField fieldName="SBQQ__Discount__c" aura:id="adF3" value="{!v.aADValue3}"/></td>
+                                <td><lightning:outputField fieldName="ExperisPricing__Discount_Indicator__c"/></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Customer Price</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Product_Invoice_Price__c" value="{!v.ncprice3}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Customer_Price_Pct__c" value="{!v.ncpricePct3}" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freight Charge</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Charge__c" value="{!v.frprice3}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Charge_Percent__c" readonly="true" aura:id="frD3" value="{!v.fcPct3}"/></td>
+                              	<td><lightning:inputField fieldName="SBQQ__ProductFamily__c" readonly="true" aura:id="pFId3" class="slds-hide"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Type__c" onchange="{!c.handleChange3}"/></td></tr>
+                            <!--<tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Other Services Charge</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Other_Services_Charge__c" style="currency" readonly="true" aura:id="osD3"/></td>
+                                <td><lightning:formattedNumber value="{!v.OtherServicesChargePerc3}" style="percent" maximumFractionDigits="2"/></td>
+                                <td></td><td></td></tr>-->
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Invoice Price</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Invoice_Price__c" value="{!v.niprice3}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Invoice_Price_Pct__c" value="{!v.nipricePct3}" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Revenue Rebate</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Revenue_Rebate__c" style="currency" readonly="true" aura:id="rrD3" value="{!v.rrprice3}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Revenue__Rebate_Percent__c" readonly="true" value="{!v.rrPct3}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Volume Rebate</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Volume_Rebate__c" style="currency" readonly="true" value="{!v.vrprice3}" aura:id="vrD3"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Volume_Rebate_Percent__c" readonly="true" value="{!v.vrPct3}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Net Price</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Net_Price__c" value="{!v.nnprice3}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Net_Price_Pct__c" value="{!v.nnpricePct3}" style="percent" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freight Cost</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Cost__c" style="currency" readonly="true" aura:id="fcD3" value="{!v.frcprice3}"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Freight_Cost_Percent__c" readonly="true" value="{!v.frcPct3}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Service Cost</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Service_Cost__c" style="currency" readonly="true" value="{!v.secprice3}" aura:id="secD3"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Service_Cost_Percent__c" readonly="true" value="{!v.secPct3}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Pocket Price</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Pocket_Price__c" value="{!v.npprice3}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Pocket_Price_Pct__c" value="{!v.nppricePct3}" style="percent" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Standard Cost</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Standard_Cost__c" style="currency" readonly="true" value="{!v.scprice3}" aura:id="scD3"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Standard_Cost_Percent__c" readonly="true" value="{!v.scPct3}"/></td>
+                                <td></td><td></td></tr>
+                            <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Pocket Margin</td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Pocket_Margin__c" value="{!v.npmargin3}" style="currency" readonly="true"/></td>
+                                <td><lightning:inputField fieldName="ExperisPricing__Pocket_Margin_Pct__c" value="{!v.npmarginPct3}" style="percent" readonly="true"/></td>
+                                <td></td><td></td></tr>
+                            
+                        </table>
+                        <lightning:button class="slds-m-top_small" variant="brand" type="cancel"  name="cancel" label="Back" onclick="{!c.cancel}"/>
+                        <lightning:button class="slds-m-top_small" variant="brand" type="submit" name="calculate" label="Calculate" onclick="{!c.Submit3}" />
+                        <lightning:button class="slds-m-top_small" variant="brand" type="submit" name="apply" label="Apply" onclick="{!c.Submit1}" />
+                        <lightning:button class="slds-m-top_small" variant="brand" type="submit" onclick="{!c.Submit2}" name="apply" label="Apply and Primary" />
+                    </lightning:recordEditForm>
+                    </td>
+                    <td>
+                        <wave:waveDashboard dashboardId="0FK5w000000Bq7xGAC" 
+                                            showHeader = "false"
+                                            showSharing = "false" 
+                                            showTitle = "false"
+                                            height = "250px" />
+                        <wave:waveDashboard dashboardId="0FK5w000000Bq7OGAS" 
+                                            showHeader = "false"
+                                            showSharing = "false" 
+                                            showTitle = "false"
+                                            height = "250px" />
+                    </td></tr></table>
+        </lightning:tab>
+    </lightning:tabset>
+</aura:component>

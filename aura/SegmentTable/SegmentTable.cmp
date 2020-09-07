@@ -1,0 +1,22 @@
+<aura:component controller='Segment' implements="flexipage:availableForAllPageTypes,force:appHostable,flexipage:availableForRecordHome,force:hasRecordId,force:hasSObjectName" access="global">
+    <aura:attribute name="data" type="Object"/>
+    <aura:attribute name="columns" type="List"/>
+    <aura:attribute name="recordId" type="String"/>
+    <aura:attribute name="updateRecord" type="Object[]"/>
+    <aura:handler name="init" value="{! this }" action="{! c.init}"/>
+    
+    	<lightning:card title="Discount Guidance">
+        <lightning:datatable 
+                             aura:id="dtTable"
+                             columns="{! v.columns }"
+                             data="{! v.data }"
+                             keyField="Id"
+                             onsave ="{!c.onSave}"
+                             onrowaction="{! c.handleRowAction }"
+                             >
+           
+            </lightning:datatable>
+         </lightning:card>
+ 
+
+</aura:component>

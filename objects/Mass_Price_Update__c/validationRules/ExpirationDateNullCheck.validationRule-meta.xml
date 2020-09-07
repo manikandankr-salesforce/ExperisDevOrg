@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>ExpirationDateNullCheck</fullName>
+    <active>false</active>
+    <errorConditionFormula>OR( Effective_To__c &lt; TODAY(), ISNULL(Effective_To__c ))</errorConditionFormula>
+    <errorDisplayField>Effective_To__c</errorDisplayField>
+    <errorMessage>Effective To cannot be null or Date before Current Date.</errorMessage>
+</ValidationRule>

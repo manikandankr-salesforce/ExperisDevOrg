@@ -1,0 +1,4 @@
+<apex:page standardController="Pricebook2" extensions="PriceBookGeneration" action="{!onPreview}"> 
+<apex:pageMessages /> 
+<!--<sbaa:approvalPreview approvals="{!approvals}"/> -->
+</apex:page>

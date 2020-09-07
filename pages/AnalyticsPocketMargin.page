@@ -1,0 +1,9 @@
+<apex:page sidebar="true" Controller="QuoteLineController" >
+        
+  <wave:dashboard dashboardId="0FK5w000000Bq7TGAS" 
+        showTitle="true" 
+        height="800px" 
+        openLinksInNewWindow="true" 
+        filter="{'datasets' : {'EPrisolTrasactions_2020MAY28_0_pref': [ {'fields':['Name_brand_Grade'], 'selection': ['{!quoteLine.SBQQ__ProductName__c}']}]}}"/>
+        
+</apex:page>

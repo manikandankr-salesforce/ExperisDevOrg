@@ -1,0 +1,139 @@
+<aura:component controller = "LineNegotiator" implements="flexipage:availableForRecordHome,force:lightningQuickActionWithOutHeader,force:hasRecordId,force:appHostable" access="global">
+
+    <aura:html tag="style">
+   .slds-modal__container{ 
+     height : auto; width: 90%; max-width:90vh; 
+   } 
+   .modal-body{ 
+     height : 90vh !important; 
+     max-height: 90vh !important; 
+        width : 175vh !important;
+        max-width: 175vh !important;
+   } 
+   .slds-modal__footer{ 
+     display: inline !important; 
+   }
+</aura:html>
+    <aura:attribute name="record" type="Object"/>
+    <aura:attribute name="OpptyRecord" type="Object"/>
+    <aura:attribute name="recordError" type="String"/>
+    <force:recordData aura:id="record"
+                      layoutType="FULL"
+                      fields="ExperisPricing__Product_Invoice_Price__c,ExperisPricing__Invoice_Price__c,ExperisPricing__Distributor_Rebate__c,ExperisPricing__Volume_Rebate__c,ExperisPricing__Freight_Cost__c,ExperisPricing__Pocket_Price__c,ExperisPricing__Fixed_Cost__c,ExperisPricing__Product_Cost__c,ExperisPricing__Pocket_Margin__c,SBQQ__ListPrice__c"
+                      recordId="{!v.recordId}"
+                      targetError="{!v.recordError}"
+                      targetRecord="{!v.record}"
+                      targetFields="{!v.OpptyRecord }"
+                      mode="VIEW"/>
+
+   <aura:attribute name="ProductInvoicePricePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Product_Invoice_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="InvoicePricePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Invoice_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="DistributorRebatePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Distributor_Rebate__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="VolumeRebatePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Volume_Rebate__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="FreightCostPerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Freight_Cost__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="PocketPricePerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Pocket_Price__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="FixedCostPerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Fixed_Cost__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="ProductCostPerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Product_Cost__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+    <aura:attribute name="PocketMarginPerc" type="Decimal" default="{!v.OpptyRecord.ExperisPricing__Pocket_Margin__c / v.OpptyRecord.SBQQ__ListPrice__c}"/>
+
+    <lightning:layout horizontalAlign="left">
+        <lightning:layoutItem padding="around-medium">
+        <lightning:recordEditForm recordId="{!v.recordId}" objectApiName="SBQQ__QuoteLine__c">
+            <table style="width:500px;border-collapse: collapse;">
+                <tr><td style="width:10;">Product Name:</td><td><lightning:outputField fieldName="SBQQ__ProductName__c" variant="label-hidden"/></td><td>Family Name:	</td><td>Customer Sales:	</td><td>Pricing Score:</td></tr>
+            </table>
+<lightning:tabset selectedTabId="one" variant="scoped">
+        <lightning:tab label="Negotiator 1" id="one">
+            <!--lightning:button class="slds-m-top_small" label="Calculate" variant="brand"/-->
+            <table style="width:950px;border-collapse: collapse;">
+                <tr><td>
+    		<table style="width:600px;border-collapse: collapse;">
+                <tr class="border_bottom"><th>Waterfall</th><th>Amount</th><th>Percent</th><th>Percent Editable</th><th>Dropdowns</th></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint"  style="width:10%;">List Price</td><td style="width:20%;"><lightning:outputField fieldName="SBQQ__ListPrice__c"/></td><td style="width:15%;"><lightning:formattedNumber value="1" style="percent"/></td><td style="width:10%;"></td><td style="width:20%;"></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Channel Discount</td><td><lightning:outputField fieldName="ExperisPricing__Channel_Discount_Amt__c"/></td><td><lightning:outputField fieldName="ExperisPricing__Channel_Discount__c"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Volume Discount</td><td><lightning:outputField fieldName="ExperisPricing__Volume_Discount_Amt__c"/></td><td><lightning:outputField fieldName="ExperisPricing__Volume_Discount__c"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additional Discount</td><td><lightning:inputField fieldName="ExperisPricing__Additional_Discount_Amt__c" variant="label-hidden"/></td><td></td><td><lightning:inputField fieldName="SBQQ__Discount__c"/></td><td><lightning:outputField fieldName="ExperisPricing__Discount_Indicator__c"/></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Product Invoice Price</td><td><lightning:outputField fieldName="ExperisPricing__Product_Invoice_Price__c"/></td><td><lightning:formattedNumber value="{!v.ProductInvoicePricePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freight Charge</td><td><lightning:outputField fieldName="ExperisPricing__Freight_Charge__c"/></td><td><lightning:outputField fieldName="ExperisPricing__Freight_Charge_Percent__c"/></td><td></td><td><lightning:inputField fieldName="ExperisPricing__Freight_Type__c"/></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Invoice Price</td><td><lightning:outputField fieldName="ExperisPricing__Invoice_Price__c"/></td><td><lightning:formattedNumber value="{!v.InvoicePricePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Distributor Rebate</td><td><lightning:outputField fieldName="ExperisPricing__Distributor_Rebate__c"/></td><td><lightning:formattedNumber value="{!v.DistributorRebatePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Volume Rebate</td><td><lightning:outputField fieldName="ExperisPricing__Volume_Rebate__c"/></td><td><lightning:formattedNumber value="{!v.VolumeRebatePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freight Cost</td><td><lightning:outputField fieldName="ExperisPricing__Freight_Cost__c"/></td><td><lightning:formattedNumber value="{!v.FreightCostPerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Pocket Price</td><td><lightning:outputField fieldName="ExperisPricing__Pocket_Price__c"/></td><td><lightning:formattedNumber value="{!v.PocketPricePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fixed Cost</td><td><lightning:outputField fieldName="ExperisPricing__Fixed_Cost__c"/></td><td><lightning:formattedNumber value="{!v.FixedCostPerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Product Cost</td><td><lightning:outputField fieldName="ExperisPricing__Product_Cost__c"/></td><td><lightning:formattedNumber value="{!v.ProductCostPerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Pocket Margin</td><td><lightning:outputField fieldName="ExperisPricing__Pocket_Margin__c"/></td><td><lightning:formattedNumber value="{!v.PocketMarginPerc}" style="percent"/></td><td></td><td></td></tr>
+                    </table>
+            <lightning:button class="slds-m-top_small" variant="brand" type="cancel"  name="cancel" label="Back" onclick="{!c.cancel}"/>
+    		<!--<lightning:button class="slds-m-top_small" variant="brand" type="calculate" onclick="{!c.calculate}" name="calculate" label="Calculate" />-->
+			<lightning:button class="slds-m-top_small" variant="brand" type="submit" onclick="{!c.saveRecords}" name="apply" label="Apply" />
+    		<!--<lightning:button class="slds-m-top_small" variant="brand" type="apply and primary" onclick="{!c.savePrimaryRecords}" name="apply" label="Apply and Primary" />-->
+                    </td>
+                    <td>
+                        <wave:waveDashboard dashboardId="0FK5w000000Bq7xGAC" 
+                         showHeader = "false"
+                         showSharing = "false" 
+                         showTitle = "false"
+                         height = "250px"
+                         
+                                            />
+                        <wave:waveDashboard dashboardId="0FK5w000000Bq7OGAS" 
+                         showHeader = "false"
+                         showSharing = "false" 
+                         showTitle = "false"
+                         height = "250px"
+                         
+                                           /></td></tr></table>
+	</lightning:tab>
+    
+        <lightning:tab label="Negotiator 2" id="two">
+    		<table style="width:900px;border-collapse: collapse;">
+                <tr class="border_bottom"><th>Waterfall</th><th>Amount</th><th>Percent</th><th>Percent Editable</th><th>Dropdowns</th></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">List Price</td><td style="width:20%;"><lightning:outputField fieldName="SBQQ__ListPrice__c"/></td><td style="width:15%;"><lightning:formattedNumber value="1" style="percent"/></td><td style="width:10%;"></td><td style="width:20%;"></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Channel Discount</td><td><lightning:outputField fieldName="ExperisPricing__Channel_Discount_Amt__c"/></td><td><lightning:outputField fieldName="ExperisPricing__Channel_Discount__c"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Volume Discount</td><td><lightning:outputField fieldName="ExperisPricing__Volume_Discount_Amt__c"/></td><td><lightning:outputField fieldName="ExperisPricing__Volume_Discount__c"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additional Discount</td><td><lightning:inputField fieldName="ExperisPricing__Additional_Discount_Amt__c" variant="label-hidden"/></td><td></td><td><lightning:inputField fieldName="SBQQ__Discount__c"/></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Product Invoice Price</td><td><lightning:outputField fieldName="ExperisPricing__Product_Invoice_Price__c"/></td><td><lightning:formattedNumber value="{!v.ProductInvoicePricePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freight Charge</td><td><lightning:outputField fieldName="ExperisPricing__Freight_Charge__c"/></td><td><lightning:outputField fieldName="ExperisPricing__Freight_Charge_Percent__c"/></td><td></td><td><lightning:inputField fieldName="ExperisPricing__Freight_Type__c"/></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Invoice Price</td><td><lightning:outputField fieldName="ExperisPricing__Invoice_Price__c"/></td><td><lightning:formattedNumber value="{!v.InvoicePricePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Distributor Rebate</td><td><lightning:outputField fieldName="ExperisPricing__Distributor_Rebate__c"/></td><td><lightning:formattedNumber value="{!v.DistributorRebatePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Volume Rebate</td><td><lightning:outputField fieldName="ExperisPricing__Volume_Rebate__c"/></td><td><lightning:formattedNumber value="{!v.VolumeRebatePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freight Cost</td><td><lightning:outputField fieldName="ExperisPricing__Freight_Cost__c"/></td><td><lightning:formattedNumber value="{!v.FreightCostPerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Pocket Price</td><td><lightning:outputField fieldName="ExperisPricing__Pocket_Price__c"/></td><td><lightning:formattedNumber value="{!v.PocketPricePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fixed Cost</td><td><lightning:outputField fieldName="ExperisPricing__Fixed_Cost__c"/></td><td><lightning:formattedNumber value="{!v.FixedCostPerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Product Cost</td><td><lightning:outputField fieldName="ExperisPricing__Product_Cost__c"/></td><td><lightning:formattedNumber value="{!v.ProductCostPerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Pocket Margin</td><td><lightning:outputField fieldName="ExperisPricing__Pocket_Margin__c"/></td><td><lightning:formattedNumber value="{!v.PocketMarginPerc}" style="percent"/></td><td></td><td></td></tr>
+            </table>
+            <lightning:button class="slds-m-top_small" variant="brand" type="cancel"  name="cancel" label="Back" onclick="{!c.cancel}"/>
+    		<!--<lightning:button class="slds-m-top_small" variant="brand" type="calculate" onclick="{!c.calculate}" name="calculate" label="Calculate" />-->
+			<lightning:button class="slds-m-top_small" variant="brand" type="submit" onclick="{!c.saveRecords}" name="apply" label="Apply" />
+    		<!--<lightning:button class="slds-m-top_small" variant="brand" type="apply and primary" onclick="{!c.savePrimaryRecords}" name="apply" label="Apply and Primary" />-->
+        </lightning:tab>
+        <lightning:tab label="Negotiator 3" id="three">
+    	<table style="width:900px;border-collapse: collapse;">
+                <tr class="border_bottom"><th>Waterfall</th><th>Amount</th><th>Percent</th><th>Percent Editable</th><th>Dropdowns</th></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">List Price</td><td style="width:20%;"><lightning:outputField fieldName="SBQQ__ListPrice__c"/></td><td style="width:15%;"><lightning:formattedNumber value="1" style="percent"/></td><td style="width:10%;"></td><td style="width:20%;"></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Channel Discount</td><td><lightning:outputField fieldName="ExperisPricing__Channel_Discount_Amt__c"/></td><td><lightning:outputField fieldName="ExperisPricing__Channel_Discount__c"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Volume Discount</td><td><lightning:outputField fieldName="ExperisPricing__Volume_Discount_Amt__c"/></td><td><lightning:outputField fieldName="ExperisPricing__Volume_Discount__c"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Additional Discount</td><td><lightning:inputField fieldName="ExperisPricing__Additional_Discount_Amt__c" variant="label-hidden"/></td><td></td><td><lightning:inputField fieldName="SBQQ__Discount__c"/></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Product Invoice Price</td><td><lightning:outputField fieldName="ExperisPricing__Product_Invoice_Price__c"/></td><td><lightning:formattedNumber value="{!v.ProductInvoicePricePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freight Charge</td><td><lightning:outputField fieldName="ExperisPricing__Freight_Charge__c"/></td><td><lightning:outputField fieldName="ExperisPricing__Freight_Charge_Percent__c"/></td><td></td><td><lightning:inputField fieldName="ExperisPricing__Freight_Type__c"/></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Invoice Price</td><td><lightning:outputField fieldName="ExperisPricing__Invoice_Price__c"/></td><td><lightning:formattedNumber value="{!v.InvoicePricePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Distributor Rebate</td><td><lightning:outputField fieldName="ExperisPricing__Distributor_Rebate__c"/></td><td><lightning:formattedNumber value="{!v.DistributorRebatePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Volume Rebate</td><td><lightning:outputField fieldName="ExperisPricing__Volume_Rebate__c"/></td><td><lightning:formattedNumber value="{!v.VolumeRebatePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Freight Cost</td><td><lightning:outputField fieldName="ExperisPricing__Freight_Cost__c"/></td><td><lightning:formattedNumber value="{!v.FreightCostPerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Pocket Price</td><td><lightning:outputField fieldName="ExperisPricing__Pocket_Price__c"/></td><td><lightning:formattedNumber value="{!v.PocketPricePerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fixed Cost</td><td><lightning:outputField fieldName="ExperisPricing__Fixed_Cost__c"/></td><td><lightning:formattedNumber value="{!v.FixedCostPerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Product Cost</td><td><lightning:outputField fieldName="ExperisPricing__Product_Cost__c"/></td><td><lightning:formattedNumber value="{!v.ProductCostPerc}" style="percent"/></td><td></td><td></td></tr>
+                <tr class="border_bottom"><td class="waterfall_label waterfall_PricePoint">Pocket Margin</td><td><lightning:outputField fieldName="ExperisPricing__Pocket_Margin__c"/></td><td><lightning:formattedNumber value="{!v.PocketMarginPerc}" style="percent"/></td><td></td><td></td></tr>
+            </table>
+            <lightning:button class="slds-m-top_small" variant="brand" type="cancel"  name="cancel" label="Back" onclick="{!c.cancel}"/>
+    		<!--<lightning:button class="slds-m-top_small" variant="brand" type="calculate" onclick="{!c.calculate}" name="calculate" label="Calculate" />-->
+			<lightning:button class="slds-m-top_small" variant="brand" type="submit" onclick="{!c.saveRecords}" name="apply" label="Apply" />
+    		<!--<lightning:button class="slds-m-top_small" variant="brand" type="apply and primary" onclick="{!c.savePrimaryRecords}" name="apply" label="Apply and Primary" />-->
+        </lightning:tab>
+    </lightning:tabset>
+             </lightning:recordEditForm>
+        </lightning:layoutItem>
+    </lightning:layout>
+</aura:component>

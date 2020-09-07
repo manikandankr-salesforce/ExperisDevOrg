@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomApplication xmlns="http://soap.sforce.com/2006/04/metadata">
+    <defaultLandingTab>standard-home</defaultLandingTab>
+    <isNavAutoTempTabsDisabled>false</isNavAutoTempTabsDisabled>
+    <isNavPersonalizationDisabled>false</isNavPersonalizationDisabled>
+    <tabs>standard-Chatter</tabs>
+    <tabs>standard-Account</tabs>
+    <tabs>standard-Contact</tabs>
+    <tabs>standard-report</tabs>
+    <tabs>standard-Dashboard</tabs>
+    <tabs>Family_Price_Adjustment__c</tabs>
+    <tabs>Product_Adjustment__c</tabs>
+    <tabs>Base_Price_Policy__c</tabs>
+    <tabs>Freight_Charge_Policy__c</tabs>
+    <tabs>Freight_Cost__c</tabs>
+    <tabs>Product_Cost__c</tabs>
+    <tabs>Fixed_Cost__c</tabs>
+    <tabs>Channel_Discount__c</tabs>
+    <tabs>Product_Revenue__c</tabs>
+    <tabs>DealTransactionData2020JUN05__c</tabs>
+    <tabs>Country__c</tabs>
+    <tabs>Opt_Segment__c</tabs>
+    <tabs>Price_List__c</tabs>
+    <tabs>Rebate_Agreement__c</tabs>
+    <tabs>Rebate_Record__c</tabs>
+    <tabs>Rebate_Tier__c</tabs>
+    <tabs>SBQQ__ContractedPrice__c</tabs>
+    <tabs>Discount_Optimization__c</tabs>
+    <tabs>Negotiator__c</tabs>
+    <tabs>Negotiator_2__c</tabs>
+    <tabs>Negotiator_3__c</tabs>
+</CustomApplication>

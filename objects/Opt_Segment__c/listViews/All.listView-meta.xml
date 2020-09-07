@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ListView xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>All</fullName>
+    <columns>NAME</columns>
+    <columns>No_Of_Transcation__c</columns>
+    <columns>Margin_To_List__c</columns>
+    <columns>Margin_Amount__c</columns>
+    <columns>Revenue__c</columns>
+    <columns>X97th_Percentile__c</columns>
+    <columns>X3rd_Percentile__c</columns>
+    <columns>Minimum_Percentile_Discount__c</columns>
+    <columns>Max_Percentile_Discount__c</columns>
+    <columns>Range_Discount__c</columns>
+    <columns>SD_Discount__c</columns>
+    <columns>Green__c</columns>
+    <columns>Yellow__c</columns>
+    <columns>Red__c</columns>
+    <columns>Valid__c</columns>
+    <filterScope>Everything</filterScope>
+    <label>All</label>
+</ListView>

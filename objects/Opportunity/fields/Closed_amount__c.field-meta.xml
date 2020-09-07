@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Closed_amount__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF(ISPICKVAL( Status__c, &quot;Won&quot;), Amount*1,(IF(ISPICKVAL( Status__c, &quot;Loss&quot;), Amount * 0, 0)))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Closed amount</label>
+    <precision>18</precision>
+    <required>false</required>
+    <scale>2</scale>
+    <trackTrending>false</trackTrending>
+    <type>Currency</type>
+</CustomField>

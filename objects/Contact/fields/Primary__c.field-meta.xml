@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Primary__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>Primary: This is a checkbox field which should represent either the contact is primary or not.</description>
+    <externalId>false</externalId>
+    <inlineHelpText>If checked the contact is Primary contact</inlineHelpText>
+    <label>Primary</label>
+    <trackFeedHistory>false</trackFeedHistory>
+    <type>Checkbox</type>
+</CustomField>

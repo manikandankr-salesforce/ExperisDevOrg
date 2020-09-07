@@ -1,0 +1,60 @@
+<aura:component controller="ProductPriceListGeneration" implements="flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId" access="global" >
+	<aura:attribute name="mydata" type="Object"/>   
+    
+    <aura:attribute name="mycolumns" type="List"/> 
+    <aura:attribute name="filteredData" type="List" />
+    <aura:attribute name="filter" type="String" />
+    
+    <aura:handler name="init" value="{!this}" action="{!c.doInit}"/>
+    
+   <aura:handler event="aura:waiting" action="{!c.showSpinner}"/>
+    <aura:handler event="aura:doneWaiting" action="{!c.hideSpinner}"/>
+    <aura:attribute name="spinner" type="boolean" default="FALSE"/>
+
+    <!--loading spinner start-->
+    <aura:if isTrue="{!v.spinner}">
+        <div aura:id="spinnerId" class="slds-spinner_container">
+            <div class="slds-spinner--brand  slds-spinner slds-spinner--large slds-is-relative" role="alert">
+                <span class="slds-assistive-text">Loading...</span>
+                <div class="slds-spinner__dot-a"></div>
+                <div class="slds-spinner__dot-b"></div>
+            </div>
+        </div>
+    </aura:if>
+    
+    <lightning:layout horizontalAlign="left">
+        <lightning:layoutItem size = "3" padding="around-medium">
+            <lightning:input type="search" placeholder="Search on Product Family" onchange="{!c.filter}" value="{!v.filter}"  />
+        </lightning:layoutItem>
+    </lightning:layout>
+     <lightning:layout horizontalAlign="end">
+        <lightning:layoutItem padding="around-medium">
+            <lightning:button label="Refresh" variant="Neutral" onclick = "{!c.doInit}"/>
+            <lightning:button label="Generate" variant="Neutral" onclick="{!c.generateRecord}"/>
+        </lightning:layoutItem>
+    </lightning:layout>
+    
+    <lightning:layout horizontalAlign="left">
+    	<lightning:layoutItem padding="around-medium">
+        <aura:if isTrue="{!not(empty(v.mydata))}">
+            <div style="width: 1250px;">
+                <lightning:datatable data="{! v.mydata }"
+                    columns="{! v.mycolumns }"
+                    keyField="Id"
+                    showRowNumberColumn="true"
+                    hideCheckboxColumn="true"/>
+                </div>
+        </aura:if>
+        </lightning:layoutItem>
+    </lightning:layout>
+
+    <lightning:layout horizontalAlign="left">
+        <lightning:layoutItem padding="around-medium">
+         <aura:if isTrue="{!not(empty(v.mydata))}">
+                <lightning:button label="Preview Approval" variant="brand" />
+                <lightning:button label="Submit" variant="brand" />
+         </aura:if>
+        </lightning:layoutItem>
+    </lightning:layout>
+
+</aura:component>

@@ -1,0 +1,5 @@
+<apex:page standardController="Discount_Optimization__c" extensions="Segment" action="{!getAnalyticData}">
+    <script> 
+    window.history.back();
+    </script>
+</apex:page>

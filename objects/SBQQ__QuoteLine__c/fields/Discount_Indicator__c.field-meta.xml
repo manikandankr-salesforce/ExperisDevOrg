@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Discount_Indicator__c</fullName>
+    <externalId>false</externalId>
+    <formula>IF( DiscountLevel__c = 0, (IMAGE(&apos;https://imgur.com/byT4CEi.png&apos;,&quot;&quot;,30,150)),
+IF( DiscountLevel__c = 1, (IMAGE(&apos;https://imgur.com/byT4CEi.png&apos;,&quot;&quot;,30,150)),
+IF( DiscountLevel__c = 2, (IMAGE(&apos;https://imgur.com/SsyZQbJ.png&apos;,&quot;&quot;,30,150)),
+IF( DiscountLevel__c = 3, (IMAGE(&apos;https://imgur.com/PB5uR1F.png&apos;,&quot;&quot;,30,150)), &quot;&quot;))))</formula>
+    <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+    <label>Discount Indicator</label>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Text</type>
+    <unique>false</unique>
+</CustomField>

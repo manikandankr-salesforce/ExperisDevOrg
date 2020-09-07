@@ -1,0 +1,18 @@
+<apex:page controller="PriceChangeImpactController">
+    <apex:chart data="{!data}" height="500" width="1000" name="Price Change Impact">
+        <apex:legend position="left">
+
+        </apex:legend>
+        <apex:axis type="Numeric" position="left" title="Revenue" grid="true"
+            fields="data1" dashSize="2">
+        </apex:axis>
+        <apex:axis type="Category" position="bottom" fields="name" title="Revenue Impact">
+        </apex:axis>
+
+        <apex:barSeries orientation="vertical" axis="left" 
+        xField="name"
+        yField="data1,data2,data3"
+        title="Old Revenue,New Revenue,Difference" />
+    </apex:chart>
+
+</apex:page>

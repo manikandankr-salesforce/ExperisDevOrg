@@ -1,0 +1,48 @@
+.THIS .slds-form-element__label{ 
+   	display: none !important;
+}
+.THIS .slds-button__icon{ 
+    display: none !important;
+}
+.THIS .slds-assistive-text{
+    display: none !important;
+}
+.THIS .slds-form-element__icon {
+    display: none !important;
+}
+.THIS .slds-form-element_stacked {
+    padding:0;
+    margin-bottom: 0;
+}
+.THIS tr.border_bottom th {
+  	border-bottom:1pt solid grey;
+    height:25px;
+    vertical-align: middle;
+}
+
+.THIS tr.border_bottom td {
+  	border-bottom:1pt solid grey;
+    height:25px;
+    vertical-align: middle;
+}
+.THIS td.waterfall_label{
+    width:40%;
+}
+.THIS td.waterfall_PricePoint{
+    font-weight: bold;
+}
+.THIS .cuf-content{
+    padding:0 !important;
+}
+.THIS .slds-p-around--medium{
+    padding:0 !important;
+}
+.THIS .slds-modal__container{
+    width:80% !important;
+    max-width:80% !important;
+}
+.THIS .slds-modal__content{
+    overflow-y:hidden !important;
+    height:unset !important;
+    max-height:unset !important;
+}

@@ -1,0 +1,9 @@
+<apex:page >
+    <!--
+        <apex:listViews type="Product_Adjustment__c"/>
+        <apex:listViews type="Family_Price_Adjustment__c"/>
+    -->
+    <apex:enhancedList type="Product_Adjustment__c" height="250" rowsPerPage="10" id="PrdAttrAdjListViewId" />
+    <apex:enhancedList type="Family_Price_Adjustment__c" height="250" rowsPerPage="10" id="PrdFamAdjListViewId" />
+
+</apex:page>
